@@ -33,6 +33,8 @@ else()
     set(linkbotrs_lib_dir ${PROJECT_SOURCE_DIR}/liblinkbotrs/target/debug/)
 endif()
 
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+
 # Set the library dependencies
 if(UNIX)
     set(linkbotrs_library_deps 
@@ -58,7 +60,7 @@ ExternalProject_Add(linkbotrs
     BUILD_COMMAND ${linkbotrs_build_command}
     INSTALL_COMMAND ${linkbotrs_install_command}
     BUILD_IN_SOURCE 1
-    BUILD_ALWAYS ON
+    BUILD_ALWAYS OFF
     )
 
 find_library(LINKBOTRS linkbotrs 
@@ -80,3 +82,9 @@ target_link_libraries(linkbot
     )
 
 add_dependencies(linkbot linkbotrs)
+
+add_executable(linkbot_test
+    tests/test.cpp
+    )
+add_dependencies(linkbot_test linkbot)
+target_link_libraries(linkbot_test linkbot)
