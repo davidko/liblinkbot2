@@ -46,6 +46,7 @@ using rs::LinkbotAccelerometerEventCallback;
 using rs::LinkbotConnectionTerminatedCallback;
 
 namespace barobo {
+    void _buttonCallbackHelper(LinkbotButton button, LinkbotButtonState state, int timestamp, void* user_data);
 
     using PlotData = std::array< std::vector<double>, 6 >;
     
@@ -79,7 +80,7 @@ public:
     // Member functions take angles in degrees.
     // All functions are non-blocking. Use moveWait() to wait for non-blocking
     // movement functions.
-    virtual void getAccelerometer (int& timestamp, double&, double&, double&);
+    virtual void getAccelerometer (double&, double&, double&);
     virtual std::vector<int> getAdcRaw();
     virtual void getBatteryVoltage(double& voltage);
     virtual void getFormFactor(LinkbotFormFactor& form);
@@ -169,6 +170,12 @@ public:
     virtual void setPeripheralResetMask(int mask, int resetMask);
 
 private:
+    std::function<void(LinkbotButton, LinkbotButtonState, int)> buttonEventCallback;
+    std::function<void(int,double, int)> encoderEventCallback;
+    std::function<void(int,LinkbotJointState, int)> jointEventCallback;
+    std::function<void(double,double,double,int)> accelerometerEventCallback;
+    std::function<void(int)> connectionTerminatedCallback;
+    friend void _buttonCallbackHelper(LinkbotButton button, LinkbotButtonState state, int timestamp, void* user_data);
     rs::Linkbot* m;
 };
 
