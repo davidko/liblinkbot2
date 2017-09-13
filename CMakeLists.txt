@@ -16,8 +16,10 @@ set(preRelease "")
 # an actual release.
 
 set(PROJECT_VERSION_STRING "${PROJECT_VERSION}")
+set(PROJECT_DEBIAN_VERSION_STRING "${PROJECT_VERSION}")
 if(preRelease)
     set(PROJECT_VERSION_STRING "${PROJECT_VERSION_STRING}-${preRelease}")
+    set(PROJECT_DEBIAN_VERSION_STRING "${PROJECT_DEBIAN_VERSION_STRING}~${preRelease}-0")
 endif()
 
 include(ExternalProject)
@@ -52,6 +54,13 @@ if(UNIX)
         util
         )
 elseif(APPLE)
+set(linkbotrs_library_deps
+    Security
+    CoreFoundation
+    System
+    resolv
+    c
+    m)
 endif()
 
 ExternalProject_Add(linkbotrs
@@ -89,8 +98,55 @@ target_link_libraries(linkbot
 
 add_dependencies(linkbot linkbotrs)
 
+set_target_properties(linkbot
+    PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+        MACOSX_RPATH ON
+)
+
 add_executable(linkbot_test
     tests/test.cpp
     )
 add_dependencies(linkbot_test linkbot)
 target_link_libraries(linkbot_test linkbot)
+
+install(TARGETS linkbot
+    LIBRARY DESTINATION lib)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/linkbot 
+    DESTINATION include)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/liblinkbotrs/include/linkbot 
+    DESTINATION include)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    set(CPACK_DEBIAN_PACKAGE_NAME "${PROJECT_NAME}")
+    set(CPACK_DEBIAN_PACKAGE_SECTION "network")
+
+    set(CPACK_PACKAGE_VERSION ${PROJECT_DEBIAN_VERSION_STRING})
+    set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+    set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+    set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+
+    set(CPACK_PACKAGING_INSTALL_PREFIX "/")
+    set(CPACK_PACKAGE_VENDOR "Barobo")
+    set(CPACK_PACKAGE_CONTACT david@barobo.com)
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.19)")
+    # Depends on coreutils for `stdbuf`, udev for `udevadm`.
+
+    get_filename_component(compiler ${CMAKE_CXX_COMPILER} NAME)
+    if(${compiler} MATCHES "arm.*")
+        set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "armhf")
+    elseif(${compiler} MATCHES "aarch64.*")
+        set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "arm64")
+    else()
+        execute_process(COMMAND dpkg --print-architecture
+                        OUTPUT_VARIABLE DPKG_ARCH
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${DPKG_ARCH}")
+    endif()
+    message(STATUS "Packaging for architecture ${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+    set (CPACK_PACKAGE_FILE_NAME
+    "${CPACK_DEBIAN_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+    include(CPack)
+endif()
