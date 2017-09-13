@@ -575,5 +575,6 @@ void scatterPlot(PlotData data);
  
 } // barobo
 
+#include "linkbotgroup.hpp"
 
 #endif
