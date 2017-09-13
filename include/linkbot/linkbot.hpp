@@ -45,6 +45,28 @@ using rs::LinkbotJointEventCallback;
 using rs::LinkbotAccelerometerEventCallback;
 using rs::LinkbotConnectionTerminatedCallback;
 
+using rs::LINKBOT_BUTTON_STATE_UP;
+using rs::LINKBOT_BUTTON_STATE_DOWN;
+using rs::LINKBOT_BUTTON_POWER;
+using rs::LINKBOT_BUTTON_A;
+using rs::LINKBOT_BUTTON_B;
+using rs::LINKBOT_BACKWARD;
+using rs::LINKBOT_NEUTRAL;
+using rs::LINKBOT_FORWARD;
+using rs::LINKBOT_POSITIVE;
+using rs::LINKBOT_NEGATIVE;
+using rs::LINKBOT_FORM_FACTOR_I;
+using rs::LINKBOT_FORM_FACTOR_L;
+using rs::LINKBOT_FORM_FACTOR_T;
+using rs::LINKBOT_JOINT_ONE;
+using rs::LINKBOT_JOINT_TWO;
+using rs::LINKBOT_JOINT_THREE;
+using rs::LINKBOT_JOINT_STATE_COAST;
+using rs::LINKBOT_JOINT_STATE_HOLD;
+using rs::LINKBOT_JOINT_STATE_MOVING;
+using rs::LINKBOT_JOINT_STATE_FAILURE;
+using rs::LINKBOT_JOINT_STATE_POWER;
+
 namespace barobo {
     void _buttonCallbackHelper(LinkbotButton button, LinkbotButtonState state, int timestamp, void* user_data);
 

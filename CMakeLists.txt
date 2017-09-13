@@ -74,6 +74,8 @@ include_directories(
 
 add_library(linkbot SHARED 
     src/linkbot.cpp
+    src/clinkbot.cpp
+    src/rgbhashtable.c.cpp
     )
 
 target_link_libraries(linkbot 
