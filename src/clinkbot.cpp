@@ -18,6 +18,7 @@
 #include <linkbot/linkbot.hpp>
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <thread>
 
