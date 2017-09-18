@@ -283,6 +283,6 @@ void Linkbot::writeReadTwi(
     /*FIXME*/ throw std::exception();
 }
 void Linkbot::setPeripheralResetMask(int mask, int resetMask){
-    /*FIXME*/ throw std::exception();
+    rs::linkbotSetPeripheralResetMask(m, mask, resetMask);
 }
 } // namespace barobo
