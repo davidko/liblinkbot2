@@ -95,7 +95,7 @@ void Linkbot::getJointStates(int& timestamp,
                     LinkbotJointState& s1,
                     LinkbotJointState& s2,
                     LinkbotJointState& s3){
-    /*FIXME*/ throw std::exception();
+    rs::linkbotGetJointStates(m, &timestamp, &s1, &s2, &s3);
 }
 
 void Linkbot::getLedColor (int& r, int& g, int& b){
