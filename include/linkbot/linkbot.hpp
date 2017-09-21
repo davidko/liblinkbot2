@@ -69,6 +69,7 @@ using rs::LINKBOT_JOINT_STATE_POWER;
 
 namespace barobo {
     void _buttonCallbackHelper(LinkbotButton button, LinkbotButtonState state, int timestamp, void* user_data);
+    void _encoderCallbackHelper(int jointNo, double angle, int timestamp, void* user_data);
 
     using PlotData = std::array< std::vector<double>, 6 >;
     
@@ -198,6 +199,7 @@ private:
     std::function<void(double,double,double,int)> accelerometerEventCallback;
     std::function<void(int)> connectionTerminatedCallback;
     friend void _buttonCallbackHelper(LinkbotButton button, LinkbotButtonState state, int timestamp, void* user_data);
+    friend void _encoderCallbackHelper(int jointNo, double angle, int timestamp, void* user_data);
     rs::Linkbot* m;
 };
 

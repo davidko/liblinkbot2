@@ -17,6 +17,15 @@ void _buttonCallbackHelper(LinkbotButton button, LinkbotButtonState state, int t
     }
 }
 
+void _encoderCallbackHelper(int jointNo, double angle, int timestamp, void* user_data)
+{
+    auto linkbot = static_cast<Linkbot *>(user_data);
+    if(linkbot->encoderEventCallback != nullptr) {
+        linkbot->encoderEventCallback(jointNo, angle, timestamp);
+    }
+
+}
+
 int _connect_n = 0;
 
 std::string daemonHostName () {
@@ -234,11 +243,12 @@ void Linkbot::setButtonEventCallback (std::function<void(LinkbotButton, LinkbotB
     }
 }
 
-void Linkbot::setEncoderEventCallback (LinkbotEncoderEventCallback, double granularity, void* userData){
-    /*FIXME*/ throw std::exception();
+void Linkbot::setEncoderEventCallback (LinkbotEncoderEventCallback cb, double granularity, void* userData){
+    //rs::linkbotSetEncoderEventCallback(m, cb, (float)granularity, userData);
 }
+
 // cb function params: joint number, angle, timestamp
-void Linkbot::setEncoderEventCallback (std::function<void(int, double, int)>, double granularity){
+void Linkbot::setEncoderEventCallback (std::function<void(int, double, int)> callback, double granularity){
     /*FIXME*/ throw std::exception();
 }
 
