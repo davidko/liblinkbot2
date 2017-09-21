@@ -244,12 +244,17 @@ void Linkbot::setButtonEventCallback (std::function<void(LinkbotButton, LinkbotB
 }
 
 void Linkbot::setEncoderEventCallback (LinkbotEncoderEventCallback cb, double granularity, void* userData){
-    //rs::linkbotSetEncoderEventCallback(m, cb, (float)granularity, userData);
+    rs::linkbotSetEncoderEventCallback(m, cb, (float)granularity, userData);
 }
 
 // cb function params: joint number, angle, timestamp
 void Linkbot::setEncoderEventCallback (std::function<void(int, double, int)> callback, double granularity){
-    /*FIXME*/ throw std::exception();
+    encoderEventCallback = callback;
+    if(callback) {
+        rs::linkbotSetEncoderEventCallback(m, _encoderCallbackHelper, granularity, this);
+    } else {
+        rs::linkbotSetEncoderEventCallback(m, nullptr, 0, nullptr);
+    }
 }
 
 void Linkbot::setAccelerometerEventCallback (LinkbotAccelerometerEventCallback, void* userData){

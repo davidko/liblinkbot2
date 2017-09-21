@@ -13,4 +13,12 @@ int main() {
             std::cout << "Button callback. Button: " << button << " State: " << state << "\n";
             });
     std::cin.ignore();
+    l.setButtonEventCallback(nullptr);
+
+    std::cout << "Setting encoder handler... Try moving the motors, press 'Enter' to continue.\n";
+    l.setEncoderEventCallback( [] (int jointNo, double angle, int timestamp) {
+            std::cout << "Encoder callback. Joint: " << jointNo << ", angle: " << angle << "timestamp: " << timestamp << "\n";
+            }, 5.0);
+    std::cin.ignore();
+    l.setEncoderEventCallback(nullptr, 0);
 }
