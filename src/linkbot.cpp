@@ -103,7 +103,9 @@ void Linkbot::getLedColor (int& r, int& g, int& b){
 }
 
 void Linkbot::getVersionString (std::string& v){
-    /*FIXME*/ throw std::exception();
+    char buf[128];
+    rs::linkbotGetVersionString(m, buf, 128);
+    v = buf;
 }
 
 void Linkbot::getSerialId(std::string& serialId){

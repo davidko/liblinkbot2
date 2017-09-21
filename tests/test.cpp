@@ -33,6 +33,16 @@ int main() {
     l.getJointStates(timestamp, states[0], states[1], states[2]);
     std::cout << timestamp << " " << states[0] << " " << states[1] << " " << states[2] << "\n";
 
+    std::cout << "Testing getLedColor(): \n";
+    int r, g, b;
+    l.getLedColor(r, g, b);
+    std::cout << r << " " << g << " " << b << "\n";
+
+    std::cout << "Testing getVersionString():\n";
+    std::string v;
+    l.getVersionString(v);
+    std::cout << v << "\n";
+
     l.setLedColor(255, 255, 0);
     std::cout << "Setting button handler... Try presing some buttons, press 'Enter' to continue.\n";
     l.setButtonEventCallback( [] (LinkbotButton button, LinkbotButtonState state, int timestamp) {
