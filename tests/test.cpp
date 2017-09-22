@@ -57,4 +57,11 @@ int main() {
             }, 5.0);
     std::cin.ignore();
     l.setEncoderEventCallback(nullptr, 0);
+
+    std::cout << "Setting accelerometer handler... Try moving the robot around. Press 'Enter' to continue.\n";
+    l.setAccelerometerEventCallback( [] (double x, double y, double z, int timestamp) {
+            std::cout << "Accel callback: " << x << " " << y << " " << z << " " << timestamp << "\n";
+            });
+    std::cin.ignore();
+    l.setAccelerometerEventCallback(nullptr);
 }

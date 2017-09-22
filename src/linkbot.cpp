@@ -23,7 +23,14 @@ void _encoderCallbackHelper(int jointNo, double angle, int timestamp, void* user
     if(linkbot->encoderEventCallback != nullptr) {
         linkbot->encoderEventCallback(jointNo, angle, timestamp);
     }
+}
 
+void _accelerometerCallbackHelper(double x, double y, double z, int timestamp, void* user_data)
+{
+    auto linkbot = static_cast<Linkbot *>(user_data);
+    if(linkbot->accelerometerEventCallback != nullptr) {
+        linkbot->accelerometerEventCallback(x, y, z, timestamp);
+    }
 }
 
 int _connect_n = 0;
@@ -259,12 +266,17 @@ void Linkbot::setEncoderEventCallback (std::function<void(int, double, int)> cal
     }
 }
 
-void Linkbot::setAccelerometerEventCallback (LinkbotAccelerometerEventCallback, void* userData){
-    /*FIXME*/ throw std::exception();
+void Linkbot::setAccelerometerEventCallback (LinkbotAccelerometerEventCallback cb, void* userData){
+    rs::linkbotSetAccelerometerEventCallback(m, cb, userData);
 }
 // cb function params: x, y, z, timestamp
-void Linkbot::setAccelerometerEventCallback (std::function<void(double, double, double, int)>){
-    /*FIXME*/ throw std::exception();
+void Linkbot::setAccelerometerEventCallback (std::function<void(double, double, double, int)> callback){
+    accelerometerEventCallback = callback;
+    if(callback) {
+        rs::linkbotSetAccelerometerEventCallback(m, _accelerometerCallbackHelper, this);
+    } else {
+        rs::linkbotSetAccelerometerEventCallback(m, nullptr, nullptr);
+    }
 }
 
 void Linkbot::setJointEventCallback(LinkbotJointEventCallback, void* userData){
