@@ -136,12 +136,12 @@ void Linkbot::setBuzzerFrequency (double f){
     rs::linkbotSetBuzzerFrequency(m, float(f));
 }
 
-void Linkbot::setJointAccelI(int mask, double, double, double){
-    /*FIXME*/ throw std::exception();
+void Linkbot::setJointAccelI(int mask, double a1, double a2, double a3){
+    rs::linkbotSetAlphaI(m, mask, a1, a2, a3);
 }
 
-void Linkbot::setJointAccelF(int mask, double, double, double){
-    /*FIXME*/ throw std::exception();
+void Linkbot::setJointAccelF(int mask, double a1, double a2, double a3){
+    rs::linkbotSetAlphaF(m, mask, a1, a2, a3);
 }
 
 void Linkbot::setJointSpeeds (int mask, double s1, double s2, double s3){

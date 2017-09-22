@@ -38,7 +38,15 @@ endif()
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 # Set the library dependencies
-if(LINUX)
+if(APPLE)
+set(linkbotrs_library_deps
+    "-framework Security"
+    "-framework CoreFoundation"
+    "-framework System"
+    resolv
+    c
+    m)
+else()
     set(linkbotrs_library_deps 
         ssl
         crypto
@@ -53,14 +61,6 @@ if(LINUX)
         pthread
         util
         )
-elseif(APPLE)
-set(linkbotrs_library_deps
-    "-framework Security"
-    "-framework CoreFoundation"
-    "-framework System"
-    resolv
-    c
-    m)
 endif()
 
 ExternalProject_Add(linkbotrs

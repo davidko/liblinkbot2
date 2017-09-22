@@ -1,6 +1,9 @@
 #include <linkbot/linkbot.hpp>
+#include <chrono>
 #include <iostream>
 #include <string>
+#include <thread>
+#include <unistd.h>
 
 int main() {
     std::cout << "Enter test robot ID:\n";
@@ -42,6 +45,27 @@ int main() {
     std::string v;
     l.getVersionString(v);
     std::cout << v << "\n";
+
+    // SETTERS
+
+    std::cout << "Testing setBuzzerFrequency():\n";
+    l.setBuzzerFrequency(440);
+    std::this_thread::sleep_for( std::chrono::seconds(1));
+    l.setBuzzerFrequency(880);
+    std::this_thread::sleep_for( std::chrono::seconds(1));
+    l.setBuzzerFrequency(0);
+
+    std::cout << "Setting accelerations to 10 deg/s/s...\n";
+    l.setJointSpeeds(0x07, 90, 90, 90);
+    l.setJointAccelI(0x07, 10, 10, 10);
+    l.setJointAccelF(0x07, 10, 10, 10);
+    l.moveSmooth(0x07, 0x07, 360, 360, 360);
+    l.moveWait(0x07);
+    std::cout << "Setting accelerations to 90 deg/s/s...\n";
+    l.setJointAccelI(0x07, 90, 90, 90);
+    l.setJointAccelF(0x07, 90, 90, 90);
+    l.moveSmooth(0x07, 0x07, 360, 360, 360);
+    l.moveWait(0x07);
 
     l.setLedColor(255, 255, 0);
     std::cout << "Setting button handler... Try presing some buttons, press 'Enter' to continue.\n";
