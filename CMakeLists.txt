@@ -38,7 +38,7 @@ endif()
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 # Set the library dependencies
-if(UNIX)
+if(LINUX)
     set(linkbotrs_library_deps 
         ssl
         crypto
@@ -55,9 +55,9 @@ if(UNIX)
         )
 elseif(APPLE)
 set(linkbotrs_library_deps
-    Security
-    CoreFoundation
-    System
+    "-framework Security"
+    "-framework CoreFoundation"
+    "-framework System"
     resolv
     c
     m)
