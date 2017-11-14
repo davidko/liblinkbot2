@@ -67,6 +67,25 @@ int main() {
     l.moveSmooth(0x07, 0x07, 360, 360, 360);
     l.moveWait(0x07);
 
+    std::cout << "Resseting to zero...\n";
+    l.resetEncoderRevs();
+    l.moveTo(0x07, 0, 0, 0);
+    l.moveWait(0x07);
+
+    std::cout << "Testing PID controller...\n";
+    l.driveTo(0x07, 30, 30, 30);
+    l.moveWait(0x07);
+    l.driveTo(0x07, 60, 60, 60);
+    l.moveWait(0x07);
+    l.driveTo(0x07, 90, 90, 90);
+    l.moveWait(0x07);
+    l.drive(0x07, -30, -30, -30);
+    l.moveWait(0x07);
+    l.drive(0x07, -30, -30, -30);
+    l.moveWait(0x07);
+    l.drive(0x07, -30, -30, -30);
+    l.moveWait(0x07);
+
     l.setLedColor(255, 255, 0);
     std::cout << "Setting button handler... Try presing some buttons, press 'Enter' to continue.\n";
     l.setButtonEventCallback( [] (LinkbotButton button, LinkbotButtonState state, int timestamp) {
