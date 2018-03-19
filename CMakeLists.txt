@@ -46,6 +46,15 @@ set(linkbotrs_library_deps
     resolv
     c
     m)
+elseif(WIN32)
+    set(linkbotrs_library_deps
+	    wsock32 
+	    ws2_32
+	    crypt32
+	    Secur32
+	    Userenv
+	    Ncrypt
+	    )
 else()
     set(linkbotrs_library_deps 
         ssl
@@ -63,6 +72,11 @@ else()
         )
 endif()
 
+execute_process(
+	COMMAND ${linkbotrs_build_command}
+	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/liblinkbotrs
+)
+
 ExternalProject_Add(linkbotrs
     SOURCE_DIR ${PROJECT_SOURCE_DIR}/liblinkbotrs
     CONFIGURE_COMMAND ""
@@ -76,12 +90,7 @@ find_library(LINKBOTRS linkbotrs
     PATHS ${linkbotrs_lib_dir}
     )
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/liblinkbotrs/include
-    )
-
-add_library(linkbot SHARED 
+add_library(linkbot STATIC
     src/linkbot.cpp
     src/clinkbot.cpp
     src/clinkboti.cpp
@@ -89,6 +98,12 @@ add_library(linkbot SHARED
     src/clinkbotl.cpp
     src/clinkbotlgroup.cpp
     src/rgbhashtable.c.cpp
+    )
+
+target_include_directories(linkbot
+	PUBLIC
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/liblinkbotrs/include
     )
 
 target_link_libraries(linkbot 
@@ -112,12 +127,13 @@ add_executable(linkbot_test
 add_dependencies(linkbot_test linkbot)
 target_link_libraries(linkbot_test linkbot)
 
-install(TARGETS linkbot
-    LIBRARY DESTINATION lib)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/linkbot 
-    DESTINATION include)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/liblinkbotrs/include/linkbot 
-    DESTINATION include)
+
+#install(TARGETS linkbot
+#    LIBRARY DESTINATION lib)
+#install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/linkbot 
+#    DESTINATION include)
+#install(DIRECTORY ${PROJECT_SOURCE_DIR}/liblinkbotrs/include/linkbot 
+#    DESTINATION include)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(CPACK_DEBIAN_PACKAGE_NAME "${PROJECT_NAME}")

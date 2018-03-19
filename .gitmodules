@@ -1,6 +1,3 @@
 [submodule "liblinkbotrs"]
 	path = liblinkbotrs
 	url = https://github.com/davidko/liblinkbotrs
-[submodule "linkbot-core"]
-	path = linkbot-core
-	url = https://github.com/davidko/linkbot-core

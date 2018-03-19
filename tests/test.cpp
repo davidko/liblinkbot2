@@ -3,7 +3,9 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 int main() {
     std::cout << "Enter test robot ID:\n";
