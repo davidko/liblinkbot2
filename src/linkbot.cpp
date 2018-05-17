@@ -45,25 +45,16 @@ uint16_t daemonPortNo () {
 
 Linkbot::Linkbot (const std::string& serialId) {
     m = rs::linkbotFromSerialId(serialId.c_str());
+    if(m == nullptr) {
+        throw Error("Could not connect to robot.");
+    }
 }
 
 Linkbot::Linkbot() {
-    // Get the serial id from the environment
-    auto env_str = std::getenv("ROBOTMANAGER_IDS");
-    if(!env_str) {
-        throw Error("Environment variable ROBOTMANAGER_IDS not set.");
+    m = rs::linkbotAcquire();
+    if(m == nullptr) {
+        throw Error("Could not connect to robot.");
     }
-    std::string env{env_str};
-    std::istringstream ss{env};
-    std::string token;
-    _connect_n++;
-    for(int i = 0; i < _connect_n; i++) {
-        std::getline(ss, token, ',');
-    }
-    if ( token.length() != 4 ) {
-        throw Error("Insufficient number of robots connected in robot manager.");
-    }
-    m = rs::linkbotFromSerialId(token.c_str());
 }
 
 Linkbot::~Linkbot() {
