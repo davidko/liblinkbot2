@@ -193,6 +193,13 @@ public:
         size_t recvsize);
     virtual void setPeripheralResetMask(int mask, int resetMask);
 
+    /* Arduino */
+    virtual void arduinoAnalogWrite(int pin, int value);
+    virtual void arduinoAnalogRead(int pin, int &value);
+    virtual void arduinoDigitalWrite(int pin, int value);
+    virtual void arduinoDigitalRead(int pin, int &value);
+    virtual void arduinoSetPinMode(int pin, int mode);
+
 private:
     std::function<void(LinkbotButton, LinkbotButtonState, int)> buttonEventCallback;
     std::function<void(int,double, int)> encoderEventCallback;

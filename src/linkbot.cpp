@@ -302,6 +302,41 @@ void Linkbot::writeReadTwi(
     size_t recvsize){
     /*FIXME*/ throw std::exception();
 }
+
+void Linkbot::arduinoAnalogWrite(int pin, int value){
+    if(rs::linkbotArduinoAnalogWrite(m, pin, value)) {
+        throw Error("arduinoAnalogWrite failed.");
+    }
+}
+
+void Linkbot::arduinoAnalogRead(int pin, int &value){
+    uint16_t _value;
+    if(rs::linkbotArduinoAnalogRead(m, pin, &_value)) {
+        throw Error("arduinoAnalogRead failed.");
+    }
+    value = _value;
+}
+
+void Linkbot::arduinoDigitalWrite(int pin, int value) {
+    if(rs::linkbotArduinoDigitalWrite(m, pin, value)) {
+        throw Error("arduinoAnalogWrite failed.");
+    }
+}
+
+void Linkbot::arduinoDigitalRead(int pin, int &value){
+    uint8_t _value;
+    if(rs::linkbotArduinoDigitalRead(m, pin, &_value)) {
+        throw Error("arduinoDigitalRead failed.");
+    }
+    value = _value;
+}
+
+void Linkbot::arduinoSetPinMode(int pin, int mode){
+    if(rs::linkbotArduinoSetPinMode(m, pin, mode)) {
+        throw Error("arduinoSetPinMode failed.");
+    }
+}
+
 void Linkbot::setPeripheralResetMask(int mask, int resetMask){
     rs::linkbotSetPeripheralResetMask(m, mask, resetMask);
 }
