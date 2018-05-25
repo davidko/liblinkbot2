@@ -26,8 +26,13 @@ include(ExternalProject)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     set(linkbotrs_build_command cargo build --release)
-    set(linkbotrs_install_command cmake -E copy <SOURCE_DIR>/target/release/liblinkbotrs.a <INSTALL_DIR>/lib/liblinkbotrs.a
-        COMMAND cmake -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>)
+    if (WIN32)
+        set(linkbotrs_install_command cmake -E copy <SOURCE_DIR>/target/release/linkbotrs.lib <INSTALL_DIR>/lib/linkbotrs.lib
+            COMMAND cmake -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>)
+    else()
+        set(linkbotrs_install_command cmake -E copy <SOURCE_DIR>/target/release/liblinkbotrs.a <INSTALL_DIR>/lib/liblinkbotrs.a
+            COMMAND cmake -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>)
+    endif()
     set(linkbotrs_lib_dir ${PROJECT_SOURCE_DIR}/liblinkbotrs/target/release/)
 else()
     set(linkbotrs_build_command cargo build)
